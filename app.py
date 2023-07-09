@@ -72,7 +72,7 @@ def login():
             session['pass'] = password
             return redirect(url_for('home'))
         except:
-            error = "Invalid email or Password"        
+            error = "Invalid Email or Password"
             return render_template('login.html', error = error)
             
 
@@ -88,7 +88,7 @@ def register():
 
         
         if not username:
-            error = "please fill in all the required fields."
+            error = "Please fill in all the required fields."
             return render_template('register.html', error = error)         
         email_pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
 
@@ -128,7 +128,6 @@ def translate():
     logged_in = islogged_in()
     return render_template('translate.html', logged_in = logged_in)
 
-
 @app.route('/translator', methods=['GET', 'POST'])
 def translator():
     logged_in = islogged_in()   
@@ -149,14 +148,15 @@ def translator():
             data = {
                 "Input Text": sentence,
                 "Translation" : output_sentence,
-                "Time": time
+                "Time": firestore.SERVER_TIMESTAMP,
+                "Timestamp" : time
                 }
             fs.collection("Users").document(uid).collection('Translation').document(time).set(data)
             return render_template('translate.html', in_sentence = sentence, translated_text = output_sentence, logged_in = logged_in, msg = msg) 
         else:
             return render_template('translate.html', in_sentence = sentence, translated_text = output_sentence, logged_in = logged_in)
     except KeyError:
-       error = 'Translation Text does not exists in dictionary'
+       error = 'Translation text does not exist in dictionary.'
        return render_template('translate.html', error = error, logged_in=logged_in)
 
 
@@ -171,7 +171,7 @@ def MyAccount():
         username = data.to_dict()['Username']
         password = data.to_dict()['Password']
     history_ref = fs.collection('Users').document(uid).collection('Translation')
-    history = history_ref.limit(10).get()
+    history = history_ref.order_by('Time', direction=firestore.Query.DESCENDING).limit(10).get()
     documents = []
     for doc in history:
         document_data = doc.to_dict()

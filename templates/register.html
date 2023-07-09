@@ -5,10 +5,17 @@
     <!-- for bootstrap -->
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
     <!-- font reference -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta charset="UTF-8">
     <title>Register</title>
 </head>
-<body style = "background-color: #18122B;">
+<body style = "background-color: #18122B; overflow: scroll">
+
+        {%if error%}
+        <div id="alert" class="alert alert-danger" role="alert">{{error}}</div>
+        {%endif%}
 
 <ul>
     <li style = "font-size: 20px"><a href="{{url_for('translate')}}">Translate</a></li>
@@ -20,41 +27,126 @@
 
     <div class="center-form">
         <form class="register-form" method = "POST" action="/register">
-            <div class="container">
-                <input class="email" type="text" 
-                placeholder="Email" name="email"  required>
-                <input class="username" type="text" 
-                placeholder="Username" name="username" required>
-                <input class="password" type="password" 
-                placeholder="Enter Password" name="password" required>
-                <input class="c-password" type="password" 
-                placeholder="Confirm Password" name="confirm password" required>
-                <div class="container-2">
-                    <p class="c-account">By creating an account you agree to our <span class="t-priv">Terms & Privacy</span>.</p>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px;">
+                <div class="container">
+                    <input class="email" type="text"
+                    placeholder="Email" name="email" required>
+                    <input class="username" type="text"
+                    placeholder="Username" name="username" required>
+                    <input class="password" type="password"
+                    placeholder="Enter Password" name="password" required>
+                    <input class="c-password" type="password"
+                    placeholder="Confirm Password" name="confirm password" required>
                 </div>
+            <div>
+                <p class="c-account">By creating an account you agree to our <span class="t-priv">Terms & Privacy</span>.</p>
+            </div>
                 <button class="button-style" type="submit">Submit</button>
             </div>
         </form>
-    </div>
-    {%if error%}
-    <div id="errorMsg" class="alert alert-danger" role="alert">{{error}}</div>
-    {%endif%}
+        </div>
+
+        <div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+        </div>
 </body>
+
+<script type="text/javascript">
+    setTimeout(function () {
+           $('#alert').alert('close');
+    }, 2000);
+</script>
+
 <style>
+
+    body {
+        margin: auto;
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        overflow: auto;
+        background: linear-gradient(315deg, rgba(24,18,43,1), rgba(72,17,96,1), rgba(18,6,24,1));
+        animation: gradient 15s ease infinite;
+        background-size: 400% 400%;
+        background-attachment: fixed;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 0%;
+        }
+        50% {
+            background-position: 100% 100%;
+        }
+        100% {
+            background-position: 0% 0%;
+        }
+    }
+
+    .wave {
+        background: rgb(255 255 255 / 25%);
+        border-radius: 1000% 1000% 0 0;
+        position: fixed;
+        width: 200%;
+        height: 12em;
+        animation: wave 10s -3s linear infinite;
+        transform: translate3d(0, 0, 0);
+        opacity: 0.8;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+    }
+
+    .wave:nth-of-type(2) {
+        bottom: -1.25em;
+        animation: wave 18s linear reverse infinite;
+        opacity: 0.8;
+    }
+
+    .wave:nth-of-type(3) {
+        bottom: -2.5em;
+        animation: wave 20s -1s reverse infinite;
+        opacity: 0.9;
+    }
+
+    @keyframes wave {
+        2% {
+            transform: translateX(1);
+        }
+
+        25% {
+            transform: translateX(-25%);
+        }
+
+        50% {
+            transform: translateX(-50%);
+        }
+
+        75% {
+            transform: translateX(-25%);
+        }
+
+        100% {
+            transform: translateX(1);
+        }
+    }
+
+    ::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
 
       .button-style {
         background-color: #2A2A2C;
         color: #FFF;
         font-family: Inter;
         border: none;
-        padding: 10px 70px;
-        text-align: center;
+        height: 40px;
+        width: 150px;
         border-radius: 5px;
-        margin: 10px 150px;
     }
 
     .c-account, .t-priv {
-        margin: 10px 0px;
         font-family: 'Inter';
         font-size: 12px;
     }
@@ -63,15 +155,12 @@
         color: #BEAECA;
     }
 
-    .username, .c-password {
-        margin: 20px 0px;
-    }
-
     .username, .password, .c-password, .email {
         background-color: #443C68;
         color: white;
         text-align: center;
-        padding: 10px 150px;
+        height: 40px;
+        width: 50%;
         border-radius: 5px;
         border: none;
     }
@@ -81,26 +170,28 @@
     }
 
     .container {
+        display: flex;
+        flex-direction: column;
         justify-content: center;
-        margin: 100px 100px;
-    }
-
-    .container-2 {
-        display: in-line block;
+        align-items: center;
+        gap: 10px;
     }
 
     .register-form {
         background-color: #635985;
         display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         width: 700px;
         height: 500px;
         border-radius: 25px;
+        gap: 30px;
     }
 
     .center-form {
-        justify-content: center;
         display: flex;
-        margin: 40px 50px;
+        justify-content: center;
     }
 
     ul {
@@ -108,7 +199,7 @@
         margin: 0;
         padding: 0;
         overflow: hidden;
-        }
+    }
 
     li {
         float: right;
