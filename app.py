@@ -107,8 +107,7 @@ def register():
             return render_template('register.html', error=error)
         if password != c_password:
             error = 'Password does not match!'
-            return render_template('register.html', error=error)
-            
+            return render_template('register.html', error=error)  
         try:
             user = auth.create_user_with_email_and_password(email, password)
             login = auth.sign_in_with_email_and_password(email, password)
@@ -125,7 +124,7 @@ def register():
             if e.response is not None and e.response.content:
                 error = e.response.json()['error']['message']
             else:
-                error = 'An error occurred during registration.'
+                error = 'Email already exists!'
             return render_template('register.html', error=error)
 
     return render_template('register.html')
