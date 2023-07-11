@@ -190,6 +190,10 @@ def MyAccount():
     else:
         return render_template('myAccount.html', email = email, password = password, username = username, documents=documents)
     
+@app.route('/History', methods =['GET','POST'])
+def history():
+     return render_template('translate.html')   
+    
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)

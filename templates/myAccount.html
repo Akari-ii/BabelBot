@@ -65,8 +65,10 @@
             </div>
             <div class="btn-group">
                 {% for document in documents %}
-                <button>{{ document['Input Text'] }}</button>
-                <button>{{ document['Translation'] }}</button>
+                <form method = 'POST' action = '/History'>
+                <button type="submit">{{ document['Input Text'] }}</button>
+                <button "submit">{{ document['Translation'] }}</button>
+                </form>
                         {% endfor %}
             </div>
         </div>
