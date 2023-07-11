@@ -16,6 +16,9 @@
         {%if error%}
         <div id="alert" class="alert alert-danger" role="alert">{{error}}</div>
         {%endif%}
+        {%if msg%}
+        <div id="alert" class="alert alert-success" role="alert">{{msg}}</div>
+        {%endif%}
 
 <ul>
     <li style = "font-size: 20px"><a href="{{url_for('translate')}}">Translate</a></li>

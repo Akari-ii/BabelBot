@@ -56,10 +56,13 @@ def login():
         forgot_email = request.form.get('forgot.email')
         
         if forgot_email is not None:
-            req = auth.send_password_reset_email(forgot_email)
-            error = 'Check your Email to reset your password'
-            return render_template('login.html', error = error)
-            
+            try:
+                req = auth.send_password_reset_email(forgot_email)
+                msg = 'Check your Email to reset your password'
+                return render_template('login.html', msg = msg)          
+            except auth2.UserNotFoundError and HTTPError:
+                error = 'Email Does not exist!'
+                return render_template('login.html', error = error)
         try:
             login = auth.sign_in_with_email_and_password(email, password)
             session['user_id'] = login['idToken']
@@ -102,6 +105,9 @@ def register():
         if not re.match(password_pattern, password):
             error = 'Password should contain at least 1 uppercase letter, 1 lowercase letter, 1 special character, and 1 number.'
             return render_template('register.html', error=error)
+        if password != c_password:
+            error = 'Password does not match!'
+            return render_template('register.html', error=error)
             
         try:
             user = auth.create_user_with_email_and_password(email, password)
@@ -113,6 +119,8 @@ def register():
             fs.collection("Users").document(uid).set(data)
             time.sleep(10)
             session.pop('user_id', None)
+            msg = 'Account Registered Succesfully!'
+            return render_template('register.html', msg=msg)
         except HTTPError as e:
             if e.response is not None and e.response.content:
                 error = e.response.json()['error']['message']
