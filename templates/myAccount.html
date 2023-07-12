@@ -5,6 +5,7 @@
     <!-- for bootstrap -->
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
     <!-- font reference -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -50,7 +51,7 @@
                 </div>
                 <button id="reset" class="button-style" type="submit">Reset Password</button>
                 {%if msg%}    
-                <div id="errorMsg" class="alert alert-danger" role="alert">{{msg}}</div>
+                <div id="errorMsg" class="alert alert-success" role="alert">{{msg}}</div>
                 {%endif%}
                 </div>
         </div>
@@ -59,16 +60,20 @@
     <div class="tran-form">
         <div class="container-2">
             <h2 class="text-center" style="color: #FFF; font-size: 20px; font-family: Inter;"> Translation History</h2>
+                <form action = '/Delete' method = 'POST'>
+                <div class = "btn-group1">
+                    <button type = 'submit'>Clear History</button>                    
+                </div>
+            </form>
             <div style="display: flex; flex-direction: row; gap: 100px;">
                 <p style="color: #FFF; font-size: 15px; font-family: Inter;">Input Text</p>
                 <p style="color: #FFF; font-size: 15px; font-family: Inter;">Output Text</p>
             </div>
             <div class="btn-group">
                 {% for document in documents %}
-                <form method = 'POST' action = '/History'>
-                <button type="submit">{{ document['Input Text'] }}</button>
-                <button "submit">{{ document['Translation'] }}</button>
-                </form>
+                <button>{{ document['Input Text'] }}</button>
+                <button >{{ document['Translation'] }}</button>
+                
                         {% endfor %}
             </div>
         </div>
@@ -258,6 +263,25 @@
         cursor: pointer;
         border-radius: 5px;
         height: 50px;
+        width: 200px;
+        display: block;
+    }
+    .btn-group1 {
+        display: grid;
+        
+        gap: 20px;
+       
+    }
+
+    .btn-group1 button {
+        background-color: #2A2A2C;
+        color: #FFF
+        border: none;
+        color: white;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 5px;
+        height: 30px;
         width: 200px;
         display: block;
     }

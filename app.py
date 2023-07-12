@@ -190,9 +190,25 @@ def MyAccount():
     else:
         return render_template('myAccount.html', email = email, password = password, username = username, documents=documents)
     
-@app.route('/History', methods =['GET','POST'])
-def history():
-     return render_template('translate.html')   
+@app.route('/Delete', methods =['GET','POST'])
+def Delete():
+    uid = session['user_uid']
+    data_ref = fs.collection('Users').document(uid)
+    data = data_ref.get()
+    
+    if data.exists:
+        email = data.to_dict()['Email']
+        username = data.to_dict()['Username']
+        password = data.to_dict()['Password']
+    
+    history_ref = fs.collection('Users').document(uid).collection('Translation')
+    history = history_ref.order_by('Time', direction=firestore.Query.DESCENDING).limit(10).get()
+    
+    for document in history:
+        doc_ref = history_ref.document(document.id)
+        doc_ref.delete()
+        msg = 'Succesfully deleted the top 10 recent translations'
+    return render_template('myAccount.html', msg = msg)   
     
 @app.route('/logout')
 def logout():
