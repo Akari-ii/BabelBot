@@ -203,12 +203,15 @@ def Delete():
     
     history_ref = fs.collection('Users').document(uid).collection('Translation')
     history = history_ref.order_by('Time', direction=firestore.Query.DESCENDING).limit(10).get()
-    
+    documents = []
     for document in history:
         doc_ref = history_ref.document(document.id)
         doc_ref.delete()
-        msg = 'Succesfully deleted the top 10 recent translations'
-    return render_template('myAccount.html', msg = msg)   
+        if doc_ref is None:
+            msg = 'History is empty!'
+        else:
+            msg = 'Succesfully deleted the top 10 recent translations'
+    return render_template('myAccount.html', email = email, password = password, username = username,documents = documents, msg = msg)   
     
 @app.route('/logout')
 def logout():
